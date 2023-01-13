@@ -25,3 +25,4 @@ jobs:
           rsync -av bevy-sample/out/* site
           git add site
           git commit -m "Update site"
+          git push
