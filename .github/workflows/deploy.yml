@@ -1,0 +1,27 @@
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Configure Git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Update
+        env:
+          WASM_SECRET: ${{ secrets.PRIVATE_WASM_REPO_KEY }}
+          GIT_SSH_COMMAND: ssh -i ~/wasm_secret
+        run: |
+          echo "$WASM_SECRET" > ~/wasm_secret
+          chmod 600 ~/wasm_secret
+          git clone --depth 1 -b web git@github.com:cpmrph/bevy-sample.git
+          rsync -av bevy-sample/out/* site
+          git add site
+          git commit -m "Update site"
