@@ -23,7 +23,7 @@ jobs:
           echo "$WASM_SECRET" > ~/wasm_secret
           chmod 600 ~/wasm_secret
           git clone --depth 1 -b web git@github.com:cpmrph/bevy-sample.git
-          rsync -av bevy-sample/out/* site
-          git add site
+          rsync -av bevy-sample/out/* docs
+          git add docs
           git commit -m "Update site"
           git push
